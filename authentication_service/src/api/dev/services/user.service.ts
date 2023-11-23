@@ -2,6 +2,8 @@ import { FilterQuery } from "mongoose";
 import { omit } from "lodash";
 import UserModel, { IUser } from "../models/user.model";
 import log from "../../../config/Logger";
+import bcrypt from "bcryptjs"
+import config from "config"
 
 class UserService implements IService {
   public info(): void {
@@ -61,6 +63,11 @@ class UserService implements IService {
     return await UserModel.findOne(query).select(fields).lean()
   }
   
+  public async generatePassword(password: string): Promise<string> {
+    const salt = await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
+    const hash = bcrypt.hashSync(password, salt);
+    return hash
+  }
 }
 
 export default UserService

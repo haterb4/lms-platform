@@ -166,8 +166,8 @@ class UserController {
           });
        }
   
-      
-      const update = await userService.update(user._id, { passwordResetCode: 0, password});
+      const hash = await userService.generatePassword(password)
+      const update = await userService.update(user._id, { passwordResetCode: 0, password: hash});
     
       if(update.modifiedCount === 0){
         throw new Error("can not create user")
