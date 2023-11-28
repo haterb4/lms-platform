@@ -29,6 +29,8 @@ class UserController {
         }
         //this code should be sende by sms or by email to a customer
         const sendmessage = `your verification code is ${userOTP} paste it in the app form to continue`
+        await sendEmail(user.email, sendmessage, 'Verify Account')
+
         log.info(sendmessage)
 
         return res.send(user);
