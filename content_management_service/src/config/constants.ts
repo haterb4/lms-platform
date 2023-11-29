@@ -1,0 +1,1 @@
+export const CRON_TIMEOUT = 15000;
