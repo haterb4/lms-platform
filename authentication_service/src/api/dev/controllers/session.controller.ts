@@ -26,19 +26,19 @@ class SessionController {
         const accessToken = jwtHelper.signJwt(
           { ...user, session: session._id },
           "accessTokenPrivateKey",
-          { expiresIn: config.get("accessTokenTtl") } // 15 minutes,
+          { expiresIn: config.get("accessTokenTtl") }
         );
       
         // create a refresh token
         const refreshToken = jwtHelper.signJwt(
           { ...user, session: session._id },
           "refreshTokenPrivateKey",
-          { expiresIn: config.get("refreshTokenTtl") } // 15 minutes
+          { expiresIn: config.get("refreshTokenTtl") }
         );
       
         // return access & refresh tokens
       
-        return res.send({ accessToken, refreshToken });
+        return res.send({ accessToken, refreshToken, key: config.get<string>("accessTokenPublicKey") });
     }
       
     async getUserSessionsHandler(req: Request, res: Response) {
