@@ -18,7 +18,6 @@ const deserializeUser = async (req: Request, res: Response, next: NextFunction) 
     const decoded = jwtHelper.verifyJwt(accessToken, "accessTokenPublicKey")
 
     res.locals.user = decoded
-    log.info(decoded)
 
     return next()
 }

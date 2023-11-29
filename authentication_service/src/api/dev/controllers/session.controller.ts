@@ -38,7 +38,7 @@ class SessionController {
       
         // return access & refresh tokens
       
-        return res.send({ accessToken, refreshToken, key: config.get<string>("accessTokenPublicKey") });
+        return res.send({ accessToken, refreshToken });
     }
       
     async getUserSessionsHandler(req: Request, res: Response) {
