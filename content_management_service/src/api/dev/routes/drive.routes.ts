@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express'
 import requireUser from '../middlewares/requireUser';
 import { asyncHandler } from '../helpers/asyncHandler';
 import DriveController from '../controllers/drive.controller';
-import upload from '../helpers/multer';
+import upload from '../middlewares/multer';
 
 class DriveRouter {
     private _router: Router
@@ -17,7 +17,8 @@ class DriveRouter {
     }
 
     bindRoutes(){
-        this.router.post(DriveRouter.prefix, requireUser, upload.single('video'), asyncHandler(this._controller.uploadFile));
+        this.router.post(DriveRouter.prefix, requireUser, upload.single('selectedFile'), asyncHandler(this._controller.uploadFile));
+        this.router.post(DriveRouter.prefix+'/:id', requireUser, asyncHandler(this._controller.downloadFile));
     }
     healthcheck(req: Request, res: Response){
         return res.sendStatus(200)
