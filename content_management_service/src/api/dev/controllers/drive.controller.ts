@@ -263,6 +263,38 @@ class DriveController {
         log.info("downloaded")
         return res.sendStatus(200)
     }
+
+    public async streamVideo(req: Request, res: Response){
+        const { id } = req.params
+        const range = req.headers.range
+        if(!range){
+            return res.status(400).send({
+                success: false,
+                message: 'range is required'
+            });
+        }
+
+        const videoPath = path.join(__dirname, '..', '..', '..', 'downloads');
+        const userPath = path.join(videoPath, 'haterb2803gmailcom');
+        const filePath = path.join(userPath, 'course_video.mp4');
+
+        const videoSize = fs.statSync(filePath).size;
+
+        const chunckSize = 10**16;
+        const start = Number(range.replace(/\D/g, ""));
+        const end = Math.min(start + chunckSize, videoSize - 1);
+        const contentLength = end - start + 1;
+        const headers = {
+            "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": contentLength,
+            "Content-Type": "video/mp4" 
+        }
+        res.writeHead(206, headers)
+
+        const videoStream = fs.createReadStream(filePath, { start, end })
+        videoStream.pipe(res)
+    }
 }
 
 export default DriveController

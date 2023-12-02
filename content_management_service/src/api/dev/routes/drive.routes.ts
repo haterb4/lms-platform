@@ -19,6 +19,7 @@ class DriveRouter {
     bindRoutes(){
         this.router.post(DriveRouter.prefix, requireUser, upload.single('selectedFile'), asyncHandler(this._controller.uploadFile));
         this.router.post(DriveRouter.prefix+'/:id', requireUser, asyncHandler(this._controller.downloadFile));
+        this.router.get(DriveRouter.prefix+'/stream/:id', asyncHandler(this._controller.streamVideo));
     }
     healthcheck(req: Request, res: Response){
         return res.sendStatus(200)
